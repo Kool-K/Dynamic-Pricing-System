@@ -3,6 +3,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: linear-gradient(to bottom right, #f0f4f8, #d9e4f5); /* soft gradient */
     background-color: #f4f4f4;
     padding: 20px;
 }
@@ -44,6 +45,11 @@ h1, h2 {
 
 #inventory-table tr:hover {
     background-color: #e0e0e0;
+}
+
+#inventoryTable td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* Light border between rows */
 }
 
 input, button {
