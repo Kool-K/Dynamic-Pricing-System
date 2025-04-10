@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Hardcoded test data
     const testData = [
-        { name: "Product A", total_sold: 100 },
-        { name: "Product B", total_sold: 80 },
-        { name: "Product C", total_sold: 120 }
+        { name: "Punjabi Masala Papad", total_sold: 100 },
+        { name: "Besan Laddoo", total_sold: 80 },
+        { name: "Mango Pickle", total_sold: 120 }
     ];
 
     const chart = document.getElementById('chart');
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
         valueLabel.style.left = '50%';
         valueLabel.style.transform = 'translateX(-50%)';
         valueLabel.style.fontSize = '0.8rem';
-        valueLabel.style.color = '#333';
+        valueLabel.style.color = 'white';
         bar.appendChild(valueLabel);
 
         chart.appendChild(bar);

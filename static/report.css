@@ -20,6 +20,7 @@ body {
     max-width: 850px;
     transition: transform 0.3s ease-in-out;
     position: relative;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
 .report-container:hover {
@@ -73,6 +74,7 @@ h1 {
 .bar:hover {
     transform: translateY(-8px) scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    animation: pulse 1.2s infinite;
 }
 
 .bar span {
@@ -80,8 +82,8 @@ h1 {
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%) translateY(-10px);
-    background-color: rgba(50, 50, 50, 0.85);
-    color: #fff;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #ffffff;
     padding: 10px 15px;
     border-radius: 8px;
     font-size: 0.9rem;
@@ -90,6 +92,7 @@ h1 {
     pointer-events: none;
     transition: opacity 0.3s ease, transform 0.3s ease;
     z-index: 10;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
 }
 
 .bar:hover span {
@@ -97,42 +100,34 @@ h1 {
     transform: translateX(-50%) translateY(-20px);
 }
 
-/* Gradient Bars */
+/* Colorful Gradient Bars */
 .bar:nth-child(1) {
-    background: linear-gradient(to top, #ff6f61, #ff9472);
+    background: linear-gradient(to top, #ff416c, #ff4b2b);
 }
 .bar:nth-child(2) {
-    background: linear-gradient(to top, #36d1dc, #5b86e5);
+    background: linear-gradient(to top, #00b09b, #96c93d);
 }
 .bar:nth-child(3) {
-    background: linear-gradient(to top, #a1c4fd, #c2e9fb);
+    background: linear-gradient(to top, #4facfe, #00f2fe);
 }
 
-@keyframes pulse {
-    0%, 100% {
-        box-shadow: 0 0 0 rgba(255, 255, 255, 0);
-    }
-    50% {
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    }
-}
-
-.bar:hover {
-    animation: pulse 1.2s infinite;
-}
-
-/* Soft background animation */
+/* Floating background animation */
 body::before,
 body::after {
     content: "";
     position: fixed;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, #ffafbd, #ffc3a0);
     border-radius: 50%;
     opacity: 0.3;
     z-index: -1;
     animation: float 12s ease-in-out infinite;
+}
+
+body::before {
+    top: 20%;
+    left: -10%;
+    background: radial-gradient(circle, #ffafbd, #ffc3a0);
 }
 
 body::after {
@@ -142,20 +137,10 @@ body::after {
     animation-delay: 6s;
 }
 
-body::before {
-    top: 20%;
-    left: -10%;
-}
-
 @keyframes float {
     0% { transform: translateY(0px) scale(1); }
     50% { transform: translateY(-30px) scale(1.05); }
     100% { transform: translateY(0px) scale(1); }
-}
-
-/* Fade-in animation */
-.report-container {
-    animation: fadeIn 1.5s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -166,6 +151,16 @@ body::before {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* Pulse effect */
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
+    50% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     }
 }
 
@@ -186,12 +181,10 @@ body::before {
     animation: confetti-fall 2s ease-in forwards;
 }
 
-/* Positioning confetti on bars */
 .confetti.bar-1 { left: 130px; top: 60px; background-color: #ff6f61; }
 .confetti.bar-2 { left: 380px; top: 60px; background-color: #36d1dc; }
 .confetti.bar-3 { left: 630px; top: 60px; background-color: #a1c4fd; }
 
-/* Multiple confetti pieces for each bar */
 .confetti::after {
     content: '';
     position: absolute;
@@ -213,21 +206,21 @@ body::before {
     transition: opacity 0.5s ease-in;
 }
 
-.label-1 { color: #ff6f61; top: 180px; left: 165px; }
-.label-2 { color: #00c6ff; top: 250px; left: 415px; }
-.label-3 { color: #a1c4fd; top: 120px; left: 660px; }
+.label-1 { color: #ff416c; top: 180px; left: 165px; }
+.label-2 { color: #00b09b; top: 250px; left: 415px; }
+.label-3 { color: #00f2fe; top: 120px; left: 660px; }
 
 /* Header styles for top-left and top-right positioning */
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Align items to the top */
-    width: 100%; /* Ensure header spans the full width */
+    align-items: flex-start;
+    width: 100%;
     margin-bottom: 20px;
 }
 
 .header button {
-    background: #4CAF50; /* Green background */
+    background: #4CAF50;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -237,9 +230,8 @@ body::before {
     font-size: 1em;
 }
 
-/* Logout button specific styles */
 #logoutButton {
-    background: #f44336; /* Red background for logout */
+    background: #f44336;
 }
 
 .header button:hover {

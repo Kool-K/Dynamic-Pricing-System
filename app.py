@@ -251,29 +251,6 @@ def logout():
     session.pop('password', None)
     return redirect(url_for('index'))
 
-@app.route('/sales_report')
-def sales_report():
-    if 'username' in session:
-        conn = get_db_connection(session['username'], session['password'])
-        if conn:
-            cursor = conn.cursor(dictionary=True)
-            cursor.execute("""
-                SELECT p.name, SUM(s.quantity_sold) as total_sold
-                FROM sales_report s
-                JOIN products p ON s.product_id = p.product_id
-                GROUP BY p.product_id
-                ORDER BY total_sold DESC
-                LIMIT 3
-            """)
-            top_selling_items = cursor.fetchall()
-            cursor.close()
-            conn.close()
-            return jsonify(top_selling_items)
-        else:
-            return jsonify({"error": "Database connection failed"}), 500
-    else:
-        return redirect(url_for('index'))
-
 @app.route('/report')
 def report():
     if 'username' in session:
