@@ -97,9 +97,9 @@ def inventory():
                             cursor.execute("UPDATE products SET price = %s, price_changed = TRUE WHERE product_id = %s", (new_price, item['product_id']))
                             conn.commit()
                             cursor.close()
-                            item['price'] = new_price # update item price for template
-                            item['price_changed'] = True # update price_changed for template
-                            item['original_price'] = original_price # update original price for template
+                            item['price'] = new_price
+                            item['price_changed'] = True
+                            item['original_price'] = original_price
                     item['expiry_date'] = item['expiry_date'].strftime('%Y-%m-%d')
 
                 if item['stock'] < 10 and not item['price_changed']:
@@ -111,9 +111,9 @@ def inventory():
                         cursor.execute("UPDATE products SET price = %s, price_changed = TRUE WHERE product_id = %s", (new_price, item['product_id']))
                         conn.commit()
                         cursor.close()
-                        item['price'] = new_price # update item price for template
-                        item['price_changed'] = True # update price_changed for template
-                        item['original_price'] = original_price # update original price for template
+                        item['price'] = new_price
+                        item['price_changed'] = True
+                        item['original_price'] = original_price
                     low_stock_messages.append(f"Refill stock of {item['name']} (Product ID: {item['product_id']})")
 
                 for key, value in item.items():
@@ -121,7 +121,6 @@ def inventory():
                         item[key] = float(value)
                 item['price'] = "{:.2f}".format(item['price'])
 
-            # Ensure expiry_date is a string for all items
             for item in items:
                 if item['expiry_date']:
                     item['expiry_date'] = str(item['expiry_date'])
@@ -138,7 +137,7 @@ def inventory():
         else:
             return jsonify({"error": "Database connection failed"}), 500
     else:
-        return redirect(url_for('index'))   
+        return redirect(url_for('index'))
 
 @app.route('/add-item', methods=['POST'])
 def add_item():
@@ -148,16 +147,16 @@ def add_item():
         if conn:
             cursor = conn.cursor()
             try:
-                if 'product_id' in data and data['product_id']:  # Update existing item
+                if 'product_id' in data and data['product_id']:
                     cursor.execute("""
                         UPDATE products
                         SET name = %s, category = %s, price = %s, stock = %s, expiry_date = %s, original_price = %s
                         WHERE product_id = %s
-                    """, (data['name'], data['category'], data['price'], data['stock'], data['expiry_date'], data['price'], data['product_id']))  # Update original price too
+                    """, (data['name'], data['category'], data['price'], data['stock'], data['expiry_date'], data['price'], data['product_id']))
                     conn.commit()
                     cursor.close()
                     return jsonify({"message": "Item updated successfully"})
-                else:  # Add new item
+                else:
                     cursor.execute("SELECT * FROM products WHERE name = %s", (data['name'],))
                     existing_item = cursor.fetchone()
                     if existing_item:
@@ -210,7 +209,7 @@ def save_prices():
         if conn:
             cursor = conn.cursor()
             try:
-                cursor.execute("UPDATE products SET original_price = price, price_changed = FALSE") # reset price_changed
+                cursor.execute("UPDATE products SET original_price = price, price_changed = FALSE")
                 conn.commit()
                 cursor.close()
                 conn.close()
@@ -228,6 +227,36 @@ def logout():
     session.pop('username', None)
     session.pop('password', None)
     return redirect(url_for('index'))
+
+@app.route('/sales_report')
+def sales_report():
+    if 'username' in session:
+        conn = get_db_connection(session['username'], session['password'])
+        if conn:
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute("""
+                SELECT p.name, SUM(s.quantity_sold) as total_sold
+                FROM sales_report s
+                JOIN products p ON s.product_id = p.product_id
+                GROUP BY p.product_id
+                ORDER BY total_sold DESC
+                LIMIT 3
+            """)
+            top_selling_items = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            return jsonify(top_selling_items)
+        else:
+            return jsonify({"error": "Database connection failed"}), 500
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/report')
+def report():
+    if 'username' in session:
+        return render_template('report.html')
+    else:
+        return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
