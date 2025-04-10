@@ -133,3 +133,35 @@ button:hover {
     color: red;
     margin-left: 5px;
 }
+#searchInput {
+    width: 300px; /* Adjust the width as needed */
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease; /* Smooth transition on focus */
+}
+
+#searchInput:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove default focus outline */
+}
+
+#dropdownSuggestions {
+    width: 300px; /* Match the search box width */
+    position: absolute; /* Position relative to the parent */
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it's on top */
+}
+
+#dropdownSuggestions li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+#dropdownSuggestions li:hover {
+    background-color: #f0f0f0;
+}

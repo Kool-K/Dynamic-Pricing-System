@@ -10,6 +10,11 @@
     <button class="dashboard-logout-button" onclick="window.location.href='/dashboard'">Back to Dashboard</button>
     <button class="dashboard-logout-button" onclick="window.location.href='/logout'">Logout</button>
     <h1>Inventory List</h1>
+
+    <input type="text" id="searchInput" placeholder="Describe products..." onkeyup="liveSearch()" autocomplete="off" />
+    <ul id="dropdownSuggestions" style="border: 1px solid #ccc; display: none; list-style: none; padding: 5px;"></ul>
+    
+
     <button id="view-log-button" onclick="toggleLog()">View Log</button>
     <div id="price-change-log" style="display: none;">
         <h2>Price Change Log:</h2>
@@ -85,6 +90,41 @@
         function toggleLog() {
             const logElement = document.getElementById('price-change-log');
             logElement.style.display = logElement.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function liveSearch() {
+            const query = document.getElementById("searchInput").value.trim();
+            const dropdown = document.getElementById("dropdownSuggestions");
+
+            if (query.length < 2) {
+                dropdown.style.display = "none";
+                dropdown.innerHTML = "";
+                return;
+            }
+
+            fetch(`/search-products?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    dropdown.innerHTML = "";
+                    if (data.length === 0) {
+                        dropdown.style.display = "none";
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        const li = document.createElement("li");
+                        li.innerText = item.name;
+                        li.style.cursor = "pointer";
+                        li.onclick = () => {
+                            document.getElementById("searchInput").value = item.name;
+                            dropdown.innerHTML = "";
+                            dropdown.style.display = "none";
+                        };
+                        dropdown.appendChild(li);
+                    });
+
+                    dropdown.style.display = "block";
+                });
         }
     </script>
     <script src="{{ url_for('static', filename='inventory.js') }}"></script>

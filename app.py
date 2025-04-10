@@ -100,7 +100,7 @@ def inventory():
                             item['price'] = new_price
                             item['price_changed'] = True
                             item['original_price'] = original_price
-                    item['expiry_date'] = item['expiry_date'].strftime('%Y-%m-%d')
+                        item['expiry_date'] = item['expiry_date'].strftime('%Y-%m-%d')
 
                 if item['stock'] < 10 and not item['price_changed']:
                     new_price = float(float(item['price']) * (1 + (request.args.get('raise', 5, type=int) / 100)))
@@ -136,6 +136,29 @@ def inventory():
                                    low_stock_messages=json.dumps(low_stock_messages))
         else:
             return jsonify({"error": "Database connection failed"}), 500
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/search-products', methods=['GET'])
+def search_products():
+    if 'username' in session:
+        query = request.args.get('q', '')
+        conn = get_db_connection(session['username'], session['password'])
+        if conn:
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute("""
+                SELECT product_id, name, description
+                FROM products
+                WHERE MATCH(description) AGAINST (%s IN NATURAL LANGUAGE MODE)
+                ORDER BY MATCH(description) AGAINST (%s) DESC
+                LIMIT 10
+            """, (query, query))
+            results = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            return jsonify(results)
+        else:
+            return jsonify({'error': 'Database connection failed'}), 500
     else:
         return redirect(url_for('index'))
 
