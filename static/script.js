@@ -19,6 +19,13 @@ function validateLogin() {
     .catch(error => console.error("Login error:", error));
 }
 
+document.getElementById("password").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Prevent default form submission
+        validateLogin(); // Call the validateLogin function
+    }
+});
+
 // 🚀 Load Inventory Data
 function loadInventory() {
     fetch("/get-inventory")
