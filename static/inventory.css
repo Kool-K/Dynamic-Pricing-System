@@ -165,3 +165,16 @@ button:hover {
 #dropdownSuggestions li:hover {
     background-color: #f0f0f0;
 }
+#logContainer {
+    margin-top: 20px;
+    display: none;                     /* Hidden initially */
+    border: 1px solid #ddd;            /* Light border */
+    border-radius: 6px;                /* Smooth rounded corners */
+    padding: 15px;                     /* Padding for readability */
+    background-color: #f9f9f9;         /* Light background for alert visibility */
+}
+
+ul {
+    list-style-type: disc;             /* Bullet points */
+    padding-left: 20px;                /* Indented from the left */
+}
