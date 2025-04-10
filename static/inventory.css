@@ -3,8 +3,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(to bottom right, #f0f4f8, #d9e4f5); /* soft gradient */
-    background-color: #f4f4f4;
+    background: linear-gradient(to bottom right, #e0ecff, #f4f9ff);
     padding: 20px;
 }
 
@@ -20,16 +19,18 @@ h1, h2 {
 
 #inventory-table {
     width: 100%;
-    border-collapse: collapse;
+    /* border-collapse: collapse; */
     font-size: 16px;
     text-align: left;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 3px solid #000000;
     border-radius: 8px;
     overflow: hidden;
 }
 
 #inventory-table th, #inventory-table td {
-    border: 1px solid #ddd;
+    border: 2px solid black;
+    border-radius: 8px;
     padding: 12px 15px;
 }
 
