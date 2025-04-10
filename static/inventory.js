@@ -1,11 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-    if (!window.inventoryTablePopulated) {
-        populateInventoryTable(inventoryData);
-        loadLog();
-        window.inventoryTablePopulated = true;
-    }
-});
-
 function loadLog() {
     const logList = document.getElementById('log-list');
     const storedLog = localStorage.getItem('priceChangeLog');

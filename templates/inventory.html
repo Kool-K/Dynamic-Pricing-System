@@ -7,20 +7,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='inventory.css') }}">
 </head>
 <body>
-
     <button class="dashboard-logout-button" onclick="window.location.href='/dashboard'">Back to Dashboard</button>
     <button class="dashboard-logout-button" onclick="window.location.href='/logout'">Logout</button>
-
     <h1>Inventory List</h1>
-
     <button id="view-log-button" onclick="toggleLog()">View Log</button>
-
     <div id="price-change-log" style="display: none;">
         <h2>Price Change Log:</h2>
         <ul id="log-list">
         </ul>
     </div>
-
     <div class="inventory-table-container">
         <table id="inventory-table">
             <thead>
@@ -38,9 +33,7 @@
             </tbody>
         </table>
     </div>
-
     <h2>Manage Inventory</h2>
-
     <div class="form-container">
         <div class="input-row">
             <input type="number" id="product-id" placeholder="Product ID (Update)" readonly>
@@ -50,13 +43,11 @@
             <input type="number" id="stock" placeholder="Stock" required>
             <input type="date" id="expiry-date" required>
         </div>
-
         <div class="button-row">
             <button id="add-item-button" onclick="addItem()">Add Item</button>
             <button id="update-item-button" onclick="updateItem()" style="display: none;">Update Item</button>
         </div>
     </div>
-
     <div class="pricing-controls">
         <label for="discount-percent">Discount Percent:</label>
         <input type="number" id="discount-percent" value="5" min="0" max="100">
@@ -64,7 +55,6 @@
         <input type="number" id="raise-percent" value="5" min="0" max="100">
         <button id="save-prices-button" onclick="savePrices()">Save Prices</button>
     </div>
-
     <script>
         const itemsJson = '{{ items_json | safe }}';
         const expiringItemsJson = '{{ expiring_items_json | safe }}';
@@ -77,23 +67,25 @@
         const lowStockMessages = JSON.parse(lowStockMessagesJson);
 
         document.addEventListener("DOMContentLoaded", function () {
-            populateInventoryTable(inventoryData);
-            loadLog();
-            priceChangeMessages.forEach(msg => saveLog(msg));
-            lowStockMessages.forEach(msg => saveLog(msg));
+            if (!window.inventoryTablePopulated) {
+                populateInventoryTable(inventoryData);
+                loadLog();
 
-            if (expiringItems && expiringItems.length > 0) {
-                alert(`Items with IDs ${expiringItems.join(', ')} are nearing expiry!`);
+                priceChangeMessages.forEach(msg => saveLog(msg));
+                lowStockMessages.forEach(msg => saveLog(msg));
+
+                if (expiringItems && expiringItems.length > 0) {
+                    alert(`Items with IDs ${expiringItems.join(', ')} are nearing expiry!`);
+                }
+
+                window.inventoryTablePopulated = true;
             }
         });
 
-        // Add the toggleLog function here:
         function toggleLog() {
             const logElement = document.getElementById('price-change-log');
             logElement.style.display = logElement.style.display === 'none' ? 'block' : 'none';
         }
-
-        // ... rest of your inventory.js code ...
     </script>
     <script src="{{ url_for('static', filename='inventory.js') }}"></script>
 </body>
