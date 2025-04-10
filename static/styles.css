@@ -1,0 +1,71 @@
+/* General Page Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    background: linear-gradient(to right, #1e3c72, #2a5298); /* Cool Blue Gradient */
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+/* Login Box */
+.login-box {
+    background: rgba(26, 6, 6, 0.2);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    margin: 100px auto;
+}
+
+/* Form Labels */
+label {
+    font-size: 20px; /* Increased Font Size */
+    display: block;
+    margin: 10px 0 5px;
+    text-align: left;
+}
+
+/* Input Fields */
+input {
+    width: 90%;
+    padding: 12px;
+    font-size: 18px; /* Slightly Larger */
+    border: none;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+/* Stylish Login Button */
+button {
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background: linear-gradient(to right, #ff6a00, #ee0979);
+    transform: scale(1.05);
+}
+
+/* Error Message */
+.error-message {
+    color: #ff3b30;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+    .login-box {
+        width: 90%;
+    }
+}

@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+.inventory-table-container {
+    width: 95%;
+    margin: 20px auto;
+}
+
+#inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#inventory-table th, #inventory-table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+}
+
+#inventory-table th {
+    background-color: #f8f8f8;
+    font-weight: bold;
+    color: #333;
+}
+
+#inventory-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#inventory-table tr:hover {
+    background-color: #e0e0e0;
+}
+
+input, button {
+    margin: 8px;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input {
+    width: 200px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.input-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
+}
+
+.dashboard-logout-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #555;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-logout-button:hover {
+    background-color: #333;
+}
+
+.dashboard-logout-button:nth-child(2) { /* Select the second button */
+    left: auto; /* Reset left position */
+    right: 20px; /* Position it on the right */
+}
+
+.pricing-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pricing-controls label {
+    margin: 0 10px;
+}
+
+.pricing-controls input {
+    width: 80px;
+}
+
+.price-increased {
+    color: green;
+    margin-left: 5px;
+}
+
+.price-decreased {
+    color: red;
+    margin-left: 5px;
+}
