@@ -1,0 +1,568 @@
+mysql> desc products;
++----------------+---------------+------+-----+---------+----------------+
+| Field          | Type          | Null | Key | Default | Extra          |
++----------------+---------------+------+-----+---------+----------------+
+| product_id     | int           | NO   | PRI | NULL    | auto_increment |
+| name           | varchar(100)  | NO   |     | NULL    |                |
+| category       | varchar(50)   | YES  |     | NULL    |                |
+| price          | decimal(10,2) | NO   |     | NULL    |                |
+| stock          | int           | NO   |     | NULL    |                |
+| expiry_date    | date          | YES  |     | NULL    |                |
+| original_price | decimal(10,2) | YES  |     | NULL    |                |
+| price_changed  | tinyint(1)    | YES  |     | 0       |                |
++----------------+---------------+------+-----+---------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> desc admins;
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| admin_id | int          | NO   | PRI | NULL    | auto_increment |
+| username | varchar(100) | NO   |     | NULL    |                |
+| password | varchar(255) | NO   |     | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from products;
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+
+| product_id | name                   | category | price  | stock | expiry_date | original_price | price_changed |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+
+|          1 | Punjabi Masala Papad   | Papad    | 137.86 |    30 | 2025-06-10  |         137.86 |             0 |
+|          2 | Urad Dal Papad         | Papad    | 269.39 |     4 | 2026-04-11  |         256.56 |             1 |
+|          3 | Moong Dal Papad        | Papad    | 130.00 |    45 | 2025-11-30  |         130.00 |             0 |
+|          4 | Rice Papad             | Papad    | 100.00 |    60 | 2026-03-10  |         100.00 |             0 |
+|          5 | Jeera Khakhra          | Khakhra  | 120.61 |     4 | 2026-02-28  |         114.87 |             1 |
+|          6 | Methi Khakhra          | Khakhra  | 110.00 |    70 | 2026-04-15  |         110.00 |             0 |
+|          7 | Plain Khakhra          | Khakhra  |  80.00 |   100 | 2026-05-01  |          80.00 |             0 |
+|          8 | Chili Garlic Khakhra   | Khakhra  | 120.00 |    65 | 2026-03-20  |         120.00 |             0 |
+|          9 | Mango Pickle           | Pickle   | 200.00 |    50 | 2026-07-31  |         200.00 |             0 |
+|         10 | Lemon Pickle           | Pickle   | 241.22 |    50 | 2026-08-15  |         241.22 |             0 |
+|         11 | Chili Pickle           | Pickle   | 190.00 |    45 | 2026-06-30  |         190.00 |             0 |
+|         12 | Mixed Vegetable Pickle | Pickle   | 220.00 |    50 | 2026-09-10  |         220.00 |             0 |
+|         13 | Amla Pickle            | Pickle   | 170.00 |    60 | 2026-07-20  |         170.00 |             0 |
+|         14 | Besan Laddoo           | Laddoo   | 300.00 |    40 | 2025-12-25  |         300.00 |             0 |
+|         15 | Motichoor Laddoo       | Laddoo   | 350.00 |    35 | 2025-12-20  |         350.00 |             0 |
+|         16 | Rava Laddoo            | Laddoo   | 280.00 |    45 | 2025-11-15  |         280.00 |             0 |
+|         17 | Dry Fruit Laddoo       | Laddoo   | 380.00 |    32 | 2026-02-18  |         380.00 |             0 |
+|         18 | Gond Laddoo            | Laddoo   | 342.95 |    25 | 2026-10-13  |         342.95 |             0 |
+|         19 | Tilgul Laddoo          | Laddoo   | 320.00 |    50 | 2026-01-14  |         320.00 |             0 |
+|         20 | Coconut Laddoo         | Laddoo   | 400.12 |    30 | 2025-04-23  |         400.12 |             0 |
+|         21 | Sabudana Khichadi      | Khichadi | 148.97 |    10 | 2026-01-12  |         148.97 |             0 |
+|         22 | Test Sweet             | sweets   |  90.00 |    50 | NULL        |          90.00 |             0 |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+
+22 rows in set (0.01 sec)
+
+mysql> select * from admins;
++----------+----------+------------+
+| admin_id | username | password   |
++----------+----------+------------+
+|        1 | admin    | Admin$$123 |
++----------+----------+------------+
+1 row in set (0.01 sec)
+
+mysql> ALTER TABLE products
+    -> ADD COLUMN modified_by INT,
+    -> ADD FOREIGN KEY (modified_by) REFERENCES admins(admin_id);
+Query OK, 22 rows affected (0.50 sec)
+Records: 22  Duplicates: 0  Warnings: 0
+
+
+mysql> CREATE TABLE expired_products (
+    ->     product_id INT PRIMARY KEY,
+    ->     name VARCHAR(100),
+    ->     category VARCHAR(50),
+    ->     price DECIMAL(10, 2),
+    ->     stock INT,
+    ->     expiry_date DATE,
+    ->     archived_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from products;
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+| product_id | name                   | category | price  | stock | expiry_date | original_price | price_changed | modified_by |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+|          1 | Punjabi Masala Papad   | Papad    | 137.86 |    30 | 2025-06-10  |         137.86 |             0 |        NULL |
+|          2 | Urad Dal Papad         | Papad    | 269.39 |     4 | 2026-04-11  |         256.56 |             1 |        NULL |
+|          3 | Moong Dal Papad        | Papad    | 130.00 |    45 | 2025-11-30  |         130.00 |             0 |        NULL |
+|          4 | Rice Papad             | Papad    | 100.00 |    60 | 2026-03-10  |         100.00 |             0 |        NULL |
+|          5 | Jeera Khakhra          | Khakhra  | 120.61 |     4 | 2026-02-28  |         114.87 |             1 |        NULL |
+|          6 | Methi Khakhra          | Khakhra  | 110.00 |    70 | 2026-04-15  |         110.00 |             0 |        NULL |
+|          7 | Plain Khakhra          | Khakhra  |  80.00 |   100 | 2026-05-01  |          80.00 |             0 |        NULL |
+|          8 | Chili Garlic Khakhra   | Khakhra  | 120.00 |    65 | 2026-03-20  |         120.00 |             0 |        NULL |
+|          9 | Mango Pickle           | Pickle   | 200.00 |    50 | 2026-07-31  |         200.00 |             0 |        NULL |
+|         10 | Lemon Pickle           | Pickle   | 241.22 |    50 | 2026-08-15  |         241.22 |             0 |        NULL |
+|         11 | Chili Pickle           | Pickle   | 190.00 |    45 | 2026-06-30  |         190.00 |             0 |        NULL |
+|         12 | Mixed Vegetable Pickle | Pickle   | 220.00 |    50 | 2026-09-10  |         220.00 |             0 |        NULL |
+|         13 | Amla Pickle            | Pickle   | 170.00 |    60 | 2026-07-20  |         170.00 |             0 |        NULL |
+|         14 | Besan Laddoo           | Laddoo   | 300.00 |    40 | 2025-12-25  |         300.00 |             0 |        NULL |
+|         15 | Motichoor Laddoo       | Laddoo   | 350.00 |    35 | 2025-12-20  |         350.00 |             0 |        NULL |
+|         16 | Rava Laddoo            | Laddoo   | 280.00 |    45 | 2025-11-15  |         280.00 |             0 |        NULL |
+|         17 | Dry Fruit Laddoo       | Laddoo   | 380.00 |    32 | 2026-02-18  |         380.00 |             0 |        NULL |
+|         18 | Gond Laddoo            | Laddoo   | 342.95 |    25 | 2026-10-13  |         342.95 |             0 |        NULL |
+|         19 | Tilgul Laddoo          | Laddoo   | 320.00 |    50 | 2026-01-14  |         320.00 |             0 |        NULL |
+|         20 | Coconut Laddoo         | Laddoo   | 400.12 |    30 | 2025-04-23  |         400.12 |             0 |        NULL |
+|         21 | Sabudana Khichadi      | Khichadi | 148.97 |    10 | 2026-01-12  |         148.97 |             0 |        NULL |
+|         22 | Test Sweet             | sweets   |  90.00 |    50 | NULL        |          90.00 |             0 |        NULL |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+22 rows in set (0.01 sec)
+
+
+mysql> UPDATE products
+    -> SET modified_by = 1;
+Query OK, 22 rows affected (0.02 sec)
+Rows matched: 22  Changed: 22  Warnings: 0
+----------------------------------------------------------------JOIN----------------------------------------------------------------------
+
+mysql> SELECT
+    ->     p.product_id,
+    ->     p.name,
+    ->     a.username AS last_modified_by
+    -> FROM
+    ->     products p
+    -> JOIN
+    ->     admins a ON p.modified_by = a.admin_id;
++------------+------------------------+------------------+
+| product_id | name                   | last_modified_by |
++------------+------------------------+------------------+
+|          1 | Punjabi Masala Papad   | admin            |
+|          2 | Urad Dal Papad         | admin            |
+|          3 | Moong Dal Papad        | admin            |
+|          4 | Rice Papad             | admin            |
+|          5 | Jeera Khakhra          | admin            |
+|          6 | Methi Khakhra          | admin            |
+|          7 | Plain Khakhra          | admin            |
+|          8 | Chili Garlic Khakhra   | admin            |
+|          9 | Mango Pickle           | admin            |
+|         10 | Lemon Pickle           | admin            |
+|         11 | Chili Pickle           | admin            |
+|         12 | Mixed Vegetable Pickle | admin            |
+|         13 | Amla Pickle            | admin            |
+|         14 | Besan Laddoo           | admin            |
+|         15 | Motichoor Laddoo       | admin            |
+|         16 | Rava Laddoo            | admin            |
+|         17 | Dry Fruit Laddoo       | admin            |
+|         18 | Gond Laddoo            | admin            |
+|         19 | Tilgul Laddoo          | admin            |
+|         20 | Coconut Laddoo         | admin            |
+|         21 | Sabudana Khichadi      | admin            |
+|         22 | Test Sweet             | admin            |
++------------+------------------------+------------------+
+22 rows in set (0.00 sec)
+
+mysql> select * from products;
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+| product_id | name                   | category | price  | stock | expiry_date | original_price | price_changed | modified_by |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+|          1 | Punjabi Masala Papad   | Papad    | 137.86 |    30 | 2025-06-10  |         137.86 |             0 |           1 |
+|          2 | Urad Dal Papad         | Papad    | 269.39 |     4 | 2026-04-11  |         256.56 |             1 |           1 |
+|          3 | Moong Dal Papad        | Papad    | 130.00 |    45 | 2025-11-30  |         130.00 |             0 |           1 |
+|          4 | Rice Papad             | Papad    | 100.00 |    60 | 2026-03-10  |         100.00 |             0 |           1 |
+|          5 | Jeera Khakhra          | Khakhra  | 120.61 |     4 | 2026-02-28  |         114.87 |             1 |           1 |
+|          6 | Methi Khakhra          | Khakhra  | 110.00 |    70 | 2026-04-15  |         110.00 |             0 |           1 |
+|          7 | Plain Khakhra          | Khakhra  |  80.00 |   100 | 2026-05-01  |          80.00 |             0 |           1 |
+|          8 | Chili Garlic Khakhra   | Khakhra  | 120.00 |    65 | 2026-03-20  |         120.00 |             0 |           1 |
+|          9 | Mango Pickle           | Pickle   | 200.00 |    50 | 2026-07-31  |         200.00 |             0 |           1 |
+|         10 | Lemon Pickle           | Pickle   | 241.22 |    50 | 2026-08-15  |         241.22 |             0 |           1 |
+|         11 | Chili Pickle           | Pickle   | 190.00 |    45 | 2026-06-30  |         190.00 |             0 |           1 |
+|         12 | Mixed Vegetable Pickle | Pickle   | 220.00 |    50 | 2026-09-10  |         220.00 |             0 |           1 |
+|         13 | Amla Pickle            | Pickle   | 170.00 |    60 | 2026-07-20  |         170.00 |             0 |           1 |
+|         14 | Besan Laddoo           | Laddoo   | 300.00 |    40 | 2025-12-25  |         300.00 |             0 |           1 |
+|         15 | Motichoor Laddoo       | Laddoo   | 350.00 |    35 | 2025-12-20  |         350.00 |             0 |           1 |
+|         16 | Rava Laddoo            | Laddoo   | 280.00 |    45 | 2025-11-15  |         280.00 |             0 |           1 |
+|         17 | Dry Fruit Laddoo       | Laddoo   | 380.00 |    32 | 2026-02-18  |         380.00 |             0 |           1 |
+|         18 | Gond Laddoo            | Laddoo   | 342.95 |    25 | 2026-10-13  |         342.95 |             0 |           1 |
+|         19 | Tilgul Laddoo          | Laddoo   | 320.00 |    50 | 2026-01-14  |         320.00 |             0 |           1 |
+|         20 | Coconut Laddoo         | Laddoo   | 400.12 |    30 | 2025-04-23  |         400.12 |             0 |           1 |
+|         21 | Sabudana Khichadi      | Khichadi | 148.97 |    10 | 2026-01-12  |         148.97 |             0 |           1 |
+|         22 | Test Sweet             | sweets   |  90.00 |    50 | NULL        |          90.00 |             0 |           1 |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+22 rows in set (0.00 sec)
+
+------------------------------AGGREGATE FUNCTION average_price per category +group by clause----------------------------------------------
+
+
+mysql> SELECT
+    ->     category,
+    ->     AVG(price) AS average_price
+    -> FROM
+    ->     products
+    -> GROUP BY
+    ->     category;
++----------+---------------+
+| category | average_price |
++----------+---------------+
+| Papad    |    159.312500 |
+| Khakhra  |    107.652500 |
+| Pickle   |    204.244000 |
+| Laddoo   |    339.010000 |
+| Khichadi |    148.970000 |
+| sweets   |     90.000000 |
++----------+---------------+
+6 rows in set (0.00 sec)
+
+---------------------------------------------------------------A VIEW for LOW STOCK-------------------------------------------------------
+
+mysql>
+mysql>
+mysql>
+mysql> UPDATE products
+    -> SET stock = 5
+    -> WHERE product_id = 1;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>
+mysql> UPDATE products
+    -> SET stock = 8
+    -> WHERE product_id = 2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>
+mysql> UPDATE products
+    -> SET stock = 3
+    -> WHERE product_id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>
+mysql> CREATE VIEW low_stock_view AS
+    -> SELECT
+    ->     product_id,
+    ->     name,
+    ->     stock
+    -> FROM
+    ->     products
+    -> WHERE
+    ->     stock < 10;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> SELECT * FROM low_stock_view;
++------------+----------------------+-------+
+| product_id | name                 | stock |
++------------+----------------------+-------+
+|          1 | Punjabi Masala Papad |     5 |
+|          2 | Urad Dal Papad       |     8 |
+|          3 | Moong Dal Papad      |     3 |
+|          5 | Jeera Khakhra        |     4 |
++------------+----------------------+-------+
+4 rows in set (0.01 sec)
+
+mysql>
+----------------------------------Procedure to update price by category-------------------------------------------
+mysql>
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE update_category_price(
+    ->     IN category_name VARCHAR(50),
+    ->     IN new_price DECIMAL(10, 2),
+    ->     IN admin_id INT
+    -> )
+    -> BEGIN
+    ->     UPDATE products
+    ->     SET price = new_price, modified_by = admin_id
+    ->     WHERE category = category_name;
+    ->
+    ->     SELECT CONCAT('Prices in category ', category_name, ' updated by Admin ID: ', admin_id) AS update_log;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> CALL update_category_price('Papad', 200, 1);
++-------------------------------------------------+
+| update_log                                      |
++-------------------------------------------------+
+| Prices in category Papad updated by Admin ID: 1 |
++-------------------------------------------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from products;
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+| product_id | name                   | category | price  | stock | expiry_date | original_price | price_changed | modified_by |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+|          1 | Punjabi Masala Papad   | Papad    | 200.00 |     5 | 2025-06-10  |         137.86 |             0 |           1 |
+|          2 | Urad Dal Papad         | Papad    | 200.00 |     8 | 2026-04-11  |         256.56 |             1 |           1 |
+|          3 | Moong Dal Papad        | Papad    | 200.00 |     3 | 2025-11-30  |         130.00 |             0 |           1 |
+|          4 | Rice Papad             | Papad    | 200.00 |    60 | 2026-03-10  |         100.00 |             0 |           1 |
+|          5 | Jeera Khakhra          | Khakhra  | 120.61 |     4 | 2026-02-28  |         114.87 |             1 |           1 |
+|          6 | Methi Khakhra          | Khakhra  | 110.00 |    70 | 2026-04-15  |         110.00 |             0 |           1 |
+|          7 | Plain Khakhra          | Khakhra  |  80.00 |   100 | 2026-05-01  |          80.00 |             0 |           1 |
+|          8 | Chili Garlic Khakhra   | Khakhra  | 120.00 |    65 | 2026-03-20  |         120.00 |             0 |           1 |
+|          9 | Mango Pickle           | Pickle   | 200.00 |    50 | 2026-07-31  |         200.00 |             0 |           1 |
+|         10 | Lemon Pickle           | Pickle   | 241.22 |    50 | 2026-08-15  |         241.22 |             0 |           1 |
+|         11 | Chili Pickle           | Pickle   | 190.00 |    45 | 2026-06-30  |         190.00 |             0 |           1 |
+|         12 | Mixed Vegetable Pickle | Pickle   | 220.00 |    50 | 2026-09-10  |         220.00 |             0 |           1 |
+|         13 | Amla Pickle            | Pickle   | 170.00 |    60 | 2026-07-20  |         170.00 |             0 |           1 |
+|         14 | Besan Laddoo           | Laddoo   | 300.00 |    40 | 2025-12-25  |         300.00 |             0 |           1 |
+|         15 | Motichoor Laddoo       | Laddoo   | 350.00 |    35 | 2025-12-20  |         350.00 |             0 |           1 |
+|         16 | Rava Laddoo            | Laddoo   | 280.00 |    45 | 2025-11-15  |         280.00 |             0 |           1 |
+|         17 | Dry Fruit Laddoo       | Laddoo   | 380.00 |    32 | 2026-02-18  |         380.00 |             0 |           1 |
+|         18 | Gond Laddoo            | Laddoo   | 342.95 |    25 | 2026-10-13  |         342.95 |             0 |           1 |
+|         19 | Tilgul Laddoo          | Laddoo   | 320.00 |    50 | 2026-01-14  |         320.00 |             0 |           1 |
+|         20 | Coconut Laddoo         | Laddoo   | 400.12 |    30 | 2025-04-23  |         400.12 |             0 |           1 |
+|         21 | Sabudana Khichadi      | Khichadi | 148.97 |    10 | 2026-01-12  |         148.97 |             0 |           1 |
+|         22 | Test Sweet             | sweets   |  90.00 |    50 | NULL        |          90.00 |             0 |           1 |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+22 rows in set (0.00 sec)
+
+---------------------------------function to calculate no of days before expiry---------------------------------
+mysql>
+mysql>
+mysql> DELIMITER //
+mysql>
+mysql> CREATE FUNCTION calculate_expiry_days(expiry_date DATE) RETURNS INT
+    -> DETERMINISTIC
+    -> BEGIN
+    ->     RETURN DATEDIFF(expiry_date, CURDATE());
+    -> END //
+Query OK, 0 rows affected (0.07 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql>
+mysql> SELECT name, calculate_expiry_days(expiry_date) AS days_until_expiry FROM products;
++------------------------+-------------------+
+| name                   | days_until_expiry |
++------------------------+-------------------+
+| Punjabi Masala Papad   |                61 |
+| Urad Dal Papad         |               366 |
+| Moong Dal Papad        |               234 |
+| Rice Papad             |               334 |
+| Jeera Khakhra          |               324 |
+| Methi Khakhra          |               370 |
+| Plain Khakhra          |               386 |
+| Chili Garlic Khakhra   |               344 |
+| Mango Pickle           |               477 |
+| Lemon Pickle           |               492 |
+| Chili Pickle           |               446 |
+| Mixed Vegetable Pickle |               518 |
+| Amla Pickle            |               466 |
+| Besan Laddoo           |               259 |
+| Motichoor Laddoo       |               254 |
+| Rava Laddoo            |               219 |
+| Dry Fruit Laddoo       |               314 |
+| Gond Laddoo            |               551 |
+| Tilgul Laddoo          |               279 |
+| Coconut Laddoo         |                13 |
+| Sabudana Khichadi      |               277 |
+| Test Sweet             |              NULL |
++------------------------+-------------------+
+22 rows in set (0.02 sec)
+
+
+----------------------------------procedure to display items whose stock is low-----------------------------------
+mysql>
+mysql> DELIMITER //
+mysql>
+mysql> CREATE PROCEDURE generate_low_stock_report()
+    -> BEGIN
+    ->     DECLARE v_product_id INT;
+    ->     DECLARE v_name VARCHAR(100);
+    ->     DECLARE v_stock INT;
+    ->     DECLARE done INT DEFAULT 0;
+    ->
+    ->     DECLARE low_stock_cursor CURSOR FOR
+    ->         SELECT product_id, name, stock FROM products WHERE stock < 10;
+    ->
+    ->     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    ->
+    ->     OPEN low_stock_cursor;
+    ->
+    ->     read_loop: LOOP
+    ->         FETCH low_stock_cursor INTO v_product_id, v_name, v_stock;
+    ->         IF done THEN
+    ->             LEAVE read_loop;
+    ->         END IF;
+    ->
+    ->         SELECT CONCAT('Product ID: ', v_product_id, ', Name: ', v_name, ', Stock: ', v_stock) AS report;
+    ->     END LOOP;
+    ->
+    ->     CLOSE low_stock_cursor;
+    -> END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql>
+mysql> CALL generate_low_stock_report();
++-----------------------------------------------------+
+| report                                              |
++-----------------------------------------------------+
+| Product ID: 1, Name: Punjabi Masala Papad, Stock: 5 |
++-----------------------------------------------------+
+1 row in set (0.02 sec)
+
++-----------------------------------------------+
+| report                                        |
++-----------------------------------------------+
+| Product ID: 2, Name: Urad Dal Papad, Stock: 8 |
++-----------------------------------------------+
+1 row in set (0.02 sec)
+
++------------------------------------------------+
+| report                                         |
++------------------------------------------------+
+| Product ID: 3, Name: Moong Dal Papad, Stock: 3 |
++------------------------------------------------+
+1 row in set (0.03 sec)
+
++----------------------------------------------+
+| report                                       |
++----------------------------------------------+
+| Product ID: 5, Name: Jeera Khakhra, Stock: 4 |
++----------------------------------------------+
+1 row in set (0.03 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+-------------------Trigger 2 to archive deleted items / expired items that have been deleted--------------------
+mysql>
+mysql>
+mysql> DELIMITER //
+mysql>
+mysql> CREATE TRIGGER archive_expired_items
+    -> BEFORE DELETE ON products
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     IF OLD.expiry_date < CURDATE() THEN
+    ->         INSERT INTO expired_products (product_id, name, category, price, stock, expiry_date)
+    ->         VALUES (OLD.product_id, OLD.name, OLD.category, OLD.price, OLD.stock, OLD.expiry_date);
+    ->     END IF;
+    -> END //
+Query OK, 0 rows affected (0.08 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql>
+
+mysql> UPDATE products
+    ->
+    -> SET expiry_date = '2023-01-10'
+    ->
+    -> WHERE product_id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products
+    ->
+    -> SET expiry_date = '2023-03-01'
+    ->
+    -> WHERE product_id = 2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products
+    ->
+    -> SET expiry_date = '2023-04-04'
+    ->
+    -> WHERE product_id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> DELETE FROM products  WHERE expiry_date < CURDATE();
+Query OK, 3 rows affected (0.01 sec)
+
+mysql> select * from expired_products;
++------------+----------------------+----------+--------+-------+-------------+---------------------+
+| product_id | name                 | category | price  | stock | expiry_date | archived_date       |
++------------+----------------------+----------+--------+-------+-------------+---------------------+
+|          1 | Punjabi Masala Papad | Papad    | 200.00 |     5 | 2023-01-10  | 2025-04-10 22:58:09 |
+|          2 | Urad Dal Papad       | Papad    | 200.00 |     8 | 2023-03-01  | 2025-04-10 22:58:09 |
+|          3 | Moong Dal Papad      | Papad    | 200.00 |     3 | 2023-04-04  | 2025-04-10 22:58:09 |
++------------+----------------------+----------+--------+-------+-------------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> desc expired_products;
++---------------+---------------+------+-----+-------------------+-------------------+
+| Field         | Type          | Null | Key | Default           | Extra             |
++---------------+---------------+------+-----+-------------------+-------------------+
+| product_id    | int           | NO   | PRI | NULL              |                   |
+| name          | varchar(100)  | YES  |     | NULL              |                   |
+| category      | varchar(50)   | YES  |     | NULL              |                   |
+| price         | decimal(10,2) | YES  |     | NULL              |                   |
+| stock         | int           | YES  |     | NULL              |                   |
+| expiry_date   | date          | YES  |     | NULL              |                   |
+| archived_date | timestamp     | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++---------------+---------------+------+-----+-------------------+-------------------+
+7 rows in set (0.09 sec)
+
+
+------------------------------------------re-inserting new items in the inventory--------------------------------
+mysql> INSERT INTO products (product_id, name, category, price, stock, expiry_date)
+    ->
+    -> VALUES
+    ->
+    -> (1, 'Punjabi Masala Papad', 'Papad', 200.00, 5, '2026-01-10'),
+    ->
+    -> (2, 'Urad Dal Papad', 'Papad', 200.00, 8, '2026-03-01'),
+    ->
+    -> (3, 'Moong Dal Papad', 'Papad', 200.00, 3, '2026-04-04');
+Query OK, 3 rows affected (0.02 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from products;
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+| product_id | name                   | category | price  | stock | expiry_date | original_price | price_changed | modified_by |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+|          1 | Punjabi Masala Papad   | Papad    | 200.00 |     5 | 2026-01-10  |           NULL |             0 |        NULL |
+|          2 | Urad Dal Papad         | Papad    | 200.00 |     8 | 2026-03-01  |           NULL |             0 |        NULL |
+|          3 | Moong Dal Papad        | Papad    | 200.00 |     3 | 2026-04-04  |           NULL |             0 |        NULL |
+|          4 | Rice Papad             | Papad    | 200.00 |    60 | 2026-03-10  |         100.00 |             0 |           1 |
+|          5 | Jeera Khakhra          | Khakhra  | 120.61 |     4 | 2026-02-28  |         114.87 |             1 |           1 |
+|          6 | Methi Khakhra          | Khakhra  | 110.00 |    70 | 2026-04-15  |         110.00 |             0 |           1 |
+|          7 | Plain Khakhra          | Khakhra  |  80.00 |   100 | 2026-05-01  |          80.00 |             0 |           1 |
+|          8 | Chili Garlic Khakhra   | Khakhra  | 120.00 |    65 | 2026-03-20  |         120.00 |             0 |           1 |
+|          9 | Mango Pickle           | Pickle   | 200.00 |    50 | 2026-07-31  |         200.00 |             0 |           1 |
+|         10 | Lemon Pickle           | Pickle   | 241.22 |    50 | 2026-08-15  |         241.22 |             0 |           1 |
+|         11 | Chili Pickle           | Pickle   | 190.00 |    45 | 2026-06-30  |         190.00 |             0 |           1 |
+|         12 | Mixed Vegetable Pickle | Pickle   | 220.00 |    50 | 2026-09-10  |         220.00 |             0 |           1 |
+|         13 | Amla Pickle            | Pickle   | 170.00 |    60 | 2026-07-20  |         170.00 |             0 |           1 |
+|         14 | Besan Laddoo           | Laddoo   | 300.00 |    40 | 2025-12-25  |         300.00 |             0 |           1 |
+|         15 | Motichoor Laddoo       | Laddoo   | 350.00 |    35 | 2025-12-20  |         350.00 |             0 |           1 |
+|         16 | Rava Laddoo            | Laddoo   | 280.00 |    45 | 2025-11-15  |         280.00 |             0 |           1 |
+|         17 | Dry Fruit Laddoo       | Laddoo   | 380.00 |    32 | 2026-02-18  |         380.00 |             0 |           1 |
+|         18 | Gond Laddoo            | Laddoo   | 342.95 |    25 | 2026-10-13  |         342.95 |             0 |           1 |
+|         19 | Tilgul Laddoo          | Laddoo   | 320.00 |    50 | 2026-01-14  |         320.00 |             0 |           1 |
+|         20 | Coconut Laddoo         | Laddoo   | 400.12 |    30 | 2025-04-23  |         400.12 |             0 |           1 |
+|         21 | Sabudana Khichadi      | Khichadi | 148.97 |    10 | 2026-01-12  |         148.97 |             0 |           1 |
+|         22 | Test Sweet             | sweets   |  90.00 |    50 | NULL        |          90.00 |             0 |           1 |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+
+22 rows in set (0.00 sec)
+
+mysql>
+
+------------------------------------------------displaying both triggers------------------------------------------
+mysql> show triggers;
++-----------------------+--------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+| Trigger               | Event  | Table    | Statement                                                                                                            | Timing | Created         | sql_mode                                                                                                              | Definer        | character_set_client | collation_connection | Database Collation |
++-----------------------+--------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+| before_insert_admins  | INSERT | admins   | BEGIN
+
+    IF NEW.password NOT RLIKE '.*[A-Z].*' OR
+
+       NEW.password NOT RLIKE '.*[0-9].*' OR
+
+       NEW.password NOT RLIKE '.*[^a-zA-Z0-9].*' THEN
+
+        SIGNAL SQLSTATE '45000'
+
+            SET MESSAGE_TEXT = 'Password must have at least one uppercase letter, one number, and one special character.';
+
+    END IF;
+
+END | BEFORE | 2025-04-09 21:21:26.99 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | root@localhost | cp850                | cp850_general_ci     | utf8mb4_0900_ai_ci |
+| archive_expired_items | DELETE | products | BEGIN
+    IF OLD.expiry_date < CURDATE() THEN
+        INSERT INTO expired_products (product_id, name, category, price, stock, expiry_date)
+        VALUES (OLD.product_id, OLD.name, OLD.category, OLD.price, OLD.stock, OLD.expiry_date);
+    END IF;
+END                                                                              | BEFORE | 2025-04-10 22:51:36.43 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | root@localhost | cp850         | cp850_general_ci     | utf8mb4_0900_ai_ci |
++-----------------------+--------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+2 rows in set (0.15 sec)
+
+mysql>

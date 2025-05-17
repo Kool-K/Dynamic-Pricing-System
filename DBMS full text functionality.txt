@@ -1,0 +1,122 @@
+mysql> ALTER TABLE products ADD description TEXT;
+Query OK, 0 rows affected (0.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE products ADD FULLTEXT(description);
+Query OK, 0 rows affected, 1 warning (0.48 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> UPDATE products SET description = 'Crispy Punjabi-style papad with a spicy masala blend, perfect as a snack or side dish.' WHERE name = 'Punjabi Masala Papad';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Traditional Urad Dal papad with a light crunch, great when roasted or fried.' WHERE name ='Urad Dal Papad';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Moong Dal papad with subtle flavor, pairs well with chutneys or as an appetizer.' WHERE name = 'Moong Dal Papad';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Rice-based papad, gluten-free and delicately flavored for light snacking.' WHERE name = 'Rice Papad';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Jeera-flavored crispy Gujarati snack, light and healthy option for tea-time munching.' WHERE name = 'Jeera Khakhra';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Methi Khakhra made with fenugreek leaves, ideal for a nutritious, savory snack.' WHERE name = 'Methi Khakhra';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Plain khakhra, a basic and versatile roasted wheat snack with a satisfying crunch.' WHERE name = 'PLain Khakhra';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Chili Garlic Khakhra with bold, spicy flavor — a fusion twist to the classic snack.' WHEREname = 'Chili Garlic Khakhra';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Tangy Mango Pickle made with traditional spices and oil, a favorite Indian side dish.' WHERE name = 'Mango Pickle';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Zesty Lemon Pickle with a sharp citrus bite, fermented to perfection.' WHERE name = 'LemonPickle';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Spicy Chili Pickle with red or green chili in a masala blend — fiery and bold!' WHERE name= 'Chili Pickle';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Assorted Mixed Vegetable Pickle combining carrots, chilies, and mango in one jar.' WHERE name = 'Mixed Vegetable Pickle';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Amla (gooseberry) pickle rich in vitamin C, with a tart and spiced finish.' WHERE name = 'Amla Pickle';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Classic Besan Laddoo made from gram flour, ghee, and sugar — melts in your mouth.' WHERE name = 'Besan Laddoo';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Motichoor Laddoo made from tiny besan pearls soaked in syrup, a festive favorite.' WHERE name = 'Motichoor Laddoo';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Soft Rava Laddoo with semolina, coconut, and cardamom — lightly sweet and aromatic.' WHEREname = 'Rava Laddoo';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Dry Fruit Laddoo loaded with dates, nuts, and figs — a healthy power snack.' WHERE name = 'Dry Fruit Laddoo';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Gond Laddoo rich in edible gum and ghee, traditionally consumed in winter.' WHERE name = 'Gond Laddoo';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Tilgul Laddoo made with sesame seeds and jaggery, iconic during Makar Sankranti.' WHERE name = 'Tilgul Laddoo';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Coconut Laddoo with shredded coconut and condensed milk — sweet and chewy.' WHERE name = 'Coconut Laddoo';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE products SET description = 'Instant Sabudana Khichadi — a wholesome fasting dish made from sago pearls and peanuts.' WHERE name = 'Sabudana Khichadi';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from products;
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+-----------------------------------------------------------------------------------------+
+| product_id | name                   | category | price  | stock | expiry_date | original_price | price_changed | modified_by | description                                                                             |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+-----------------------------------------------------------------------------------------+
+|          1 | Punjabi Masala Papad   | Papad    | 210.00 |     5 | 2026-01-10  |           NULL |             1 |        NULL | Crispy Punjabi-style papad with a spicy masala blend, perfect as a snack or side dish.  |
+|          2 | Urad Dal Papad         | Papad    | 210.00 |     8 | 2026-03-01  |           NULL |             1 |        NULL | Traditional Urad Dal papad with a light crunch, great when roasted or fried.            |
+|          3 | Moong Dal Papad        | Papad    | 210.00 |     3 | 2026-04-04  |           NULL |             1 |        NULL | Moong Dal papad with subtle flavor, pairs well with chutneys or as an appetizer.        |
+|          4 | Rice Papad             | Papad    | 200.00 |    60 | 2026-03-10  |         100.00 |             0 |           1 | Rice-based papad, gluten-free and delicately flavored for light snacking.               |
+|          5 | Jeera Khakhra          | Khakhra  | 120.61 |     4 | 2026-02-28  |         114.87 |             1 |           1 | Jeera-flavored crispy Gujarati snack, light and healthy option for tea-time munching.   |
+|          6 | Methi Khakhra          | Khakhra  | 110.00 |    70 | 2026-04-15  |         110.00 |             0 |           1 | Methi Khakhra made with fenugreek leaves, ideal for a nutritious, savory snack.         |
+|          7 | Plain Khakhra          | Khakhra  |  80.00 |   100 | 2026-05-01  |          80.00 |             0 |           1 | Plain khakhra, a basic and versatile roasted wheat snack with a satisfying crunch.      |
+|          8 | Chili Garlic Khakhra   | Khakhra  | 120.00 |    65 | 2026-03-20  |         120.00 |             0 |           1 | Chili Garlic Khakhra with bold, spicy flavor ? a fusion twist to the classic snack.     |
+|          9 | Mango Pickle           | Pickle   | 200.00 |    50 | 2026-07-31  |         200.00 |             0 |           1 | Tangy Mango Pickle made with traditional spices and oil, a favorite Indian side dish.   |
+|         10 | Lemon Pickle           | Pickle   | 241.22 |    50 | 2026-08-15  |         241.22 |             0 |           1 | Zesty Lemon Pickle with a sharp citrus bite, fermented to perfection.                   |
+|         11 | Chili Pickle           | Pickle   | 190.00 |    45 | 2026-06-30  |         190.00 |             0 |           1 | Spicy Chili Pickle with red or green chili in a masala blend ? fiery and bold!          |
+|         12 | Mixed Vegetable Pickle | Pickle   | 220.00 |    50 | 2026-09-10  |         220.00 |             0 |           1 | Assorted Mixed Vegetable Pickle combining carrots, chilies, and mango in one jar.       |
+|         13 | Amla Pickle            | Pickle   | 170.00 |    60 | 2026-07-20  |         170.00 |             0 |           1 | Amla (gooseberry) pickle rich in vitamin C, with a tart and spiced finish.              |
+|         14 | Besan Laddoo           | Laddoo   | 300.00 |    40 | 2025-12-25  |         300.00 |             0 |           1 | Classic Besan Laddoo made from gram flour, ghee, and sugar ? melts in your mouth.       |
+|         15 | Motichoor Laddoo       | Laddoo   | 350.00 |    35 | 2025-12-20  |         350.00 |             0 |           1 | Motichoor Laddoo made from tiny besan pearls soaked in syrup, a festive favorite.       |
+|         16 | Rava Laddoo            | Laddoo   | 280.00 |    45 | 2025-11-15  |         280.00 |             0 |           1 | Soft Rava Laddoo with semolina, coconut, and cardamom ? lightly sweet and aromatic.     |
+|         17 | Dry Fruit Laddoo       | Laddoo   | 380.00 |    32 | 2026-02-18  |         380.00 |             0 |           1 | DryFruit Laddoo loaded with dates, nuts, and figs ? a healthy power snack.             |
+|         18 | Gond Laddoo            | Laddoo   | 342.95 |    25 | 2026-10-13  |         342.95 |             0 |           1 | Gond Laddoo rich in edible gum and ghee, traditionally consumed in winter.              |
+|         19 | Tilgul Laddoo          | Laddoo   | 320.00 |    50 | 2026-01-14  |         320.00 |             0 |           1 | Tilgul Laddoo made with sesame seeds and jaggery, iconic during Makar Sankranti.        |
+|         20 | Coconut Laddoo         | Laddoo   | 400.12 |    30 | 2025-04-23  |         400.12 |             0 |           1 | Coconut Laddoo with shredded coconut and condensed milk ? sweet and chewy.              |
+|         21 | Sabudana Khichadi      | Khichadi | 148.97 |    10 | 2026-01-12  |         148.97 |             0 |           1 | Instant Sabudana Khichadi ? a wholesome fasting dish made from sago pearls and peanuts. |
+|         22 | Test Sweet             | sweets   |  90.00 |    50 | NULL        |          90.00 |             0 |           1 | NULL                                                                                    |
++------------+------------------------+----------+--------+-------+-------------+----------------+---------------+-------------+-----------------------------------------------------------------------------------------+
+22 rows in set (0.01 sec)
+
+mysql>
