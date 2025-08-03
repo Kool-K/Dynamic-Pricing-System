@@ -4,6 +4,7 @@ A full-stack web application built with **Flask** and **MySQL** to provide a sop
 
 This system is designed for businesses with fluctuating inventory and seasonal demand, such as local food vendors. It features a powerful hybrid pricing engine that combines real-time, condition-based adjustments with pre-scheduled, automated discounts.
 
+---
 
 ## 🧐 About The Project
 
