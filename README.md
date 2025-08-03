@@ -6,7 +6,7 @@ This system is designed for businesses with fluctuating inventory and seasonal d
 
 ---
 
-## 🧐 About The Project
+##  About The Project
 
 This project provides an end-to-end solution for inventory management, featuring a secure admin login, a dashboard for navigation, an interactive inventory management interface, and a reporting page.
 
@@ -18,7 +18,7 @@ This dual approach ensures both strategic, long-term promotions and reactive, sh
 
 ---
 
-## ✨ Features
+##  Features
 
 ### Core Application
 * **Secure Admin Authentication:** A complete login/logout system to protect the dashboard and data.
