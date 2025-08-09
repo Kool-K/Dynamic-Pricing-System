@@ -35,10 +35,12 @@ h1, h2 {
 }
 
 #inventory-table th {
-    background-color: #f8f8f8;
+    background-color: #f0f8ff; /* soft blue instead of gray */
     font-weight: bold;
-    color: #333;
+    color: #0056b3; /* darker blue text */
+    font-size: 18px; /* slightly bigger */
 }
+
 
 #inventory-table tr:nth-child(even) {
     background-color: #f9f9f9;
